@@ -59,5 +59,5 @@ A desktop application for managing mahjong table bookings and player accounts. B
 **No external dependencies (uses only standard library)**
 - Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/mahjong-table-management.gitcd mahjong-table-management
+   git clone https://github.com/yourusername/mahjong-table-management.git cd mahjong-table-management
 python mahjong_system.py
