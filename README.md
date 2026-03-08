@@ -3,6 +3,18 @@
 
 A desktop application for managing mahjong table bookings and player accounts. Built with “Python” and “Tkinter”, this system provides table session tracking, account balance management, and session control.
 
+---
+## Contents
+- [Code Analysis](#code-analysis)
+- [Features](#features)
+- [System Requirement](#system-requirement)
+- [Installation](#installation)
+- [Architecture mapping](#architecture-mapping)
+- [Design system](#design-system)
+- [Configuration Documentation](#configuration-documentation)
+- [User guide](#user-guide)
+- [Admin Guide](#admin-guide)
+
 ## Code Analysis
 **class** 
 (it is an account. It stores the name, secret password, and how much money user have. The check_password() method verifies they entered the correct password.)
@@ -37,6 +49,8 @@ Repository (The Storage Manager):
 **User Management**
 - register new account with username and password
 - password using SHA-256 hashing
+- track user funds with real-time updates
+- secure authentication system
 
 **Balance Management** 
 - Top-up account balance with quick-amount buttons and custom amounts
@@ -46,6 +60,7 @@ Repository (The Storage Manager):
 
 **Session Tracking**
 - Monitor active sessions and remaining balances
+- all bookings stored in persistent database
 
 
 **Table Management**
@@ -54,10 +69,12 @@ Repository (The Storage Manager):
 - Open and close tables with cost calculation
 - Choose from preset durations (3 hours = $30, 6 hours = $60)
 
-**Dashboard**
-- Overview of all table (Available / Using)
-- User information display (username and balance)
-- Value-Added Shortcut
+**Admin Dashboard**
+- Add , edit and deldete users from one interface
+- force close table, reset table
+- view and manage all bookings
+- set pricing rate and manage data
+- backup and reset system data
 
 **Owner Authentication** 
 - Only table owners can close their sessions
@@ -68,159 +85,182 @@ Repository (The Storage Manager):
 **Responsive Updates** 
 - Real-time UI refresh after any action
 
-## Architecture mapping (color, font,setting)
+## System Requirement
+**Language**
+-  Python 3.8+
+
+**GUI Framework**
+- Tkinter
+
+**Library**
+- 'tkinter' (UI)
+- 'ttk' (styled widgets)
+- 'hashlib' (password hashing)
+- 'dataclasses' (domain models)
+- 'json' and 'os' (data persistence)
+- 'shutil' (file operation for backup)
+- 'datatime'
+**No external dependencies (uses only standard library)**
+
+## Installation
+- Clone the repository:
+   ```bash
+   git clone https://github.com/yourusername/mahjong-table-management.git cd mahjong-table-management
+
+## Architecture mapping
 1. Data Layer
    DATA_FILE = "mahjong_data.json"
 RATE_PER_HOUR = 10
 TABLE_IDS = ["0001", "0002", "0003", "0004"]
-# Colors
-# Fonts
-# Helper function
 
 2.Models Layer (data structure)
-# class User
-# class session
+- class User
+- class Booking
 
 3.Persistence Layer (storage )
-# class Repository
+- class Repository
 
 4.UI Helper Layer(styling , reusable)
-# _style_entry
-# _round_btn
-# _on
-# _off
-# _label
+- Colors
+- Fonts
+- Animations
+- Effects
 
 5.UI Window Layer (user interface)
-# AuthWindow
-# TopUpDialog
-# TableCard
-# OpenTableDialog
-# Dashboard
+- AuthWindow
+- TopUpDialog
+- TableCard
+- OpenTableDialog
+- Dashboard
 
 ## Design system
 1. color
-   <table border="1" cellpadding="8" cellspacing="0">
-  <thead>
+   <table>
     <tr>
-      <th>Purpose</th>
-      <th>Color Name</th>
+      <th>Element</th>
+      <th>Variable</th>
+      <th>Color Code</th>
       <th>Usage</th>
     </tr>
-  </thead>
-  <tbody>
     <tr>
       <td>Window Background</td>
-      <td>BG_DARK</td>
-      <td>Main window bg</td>
+      <td>BG_ROOT</td>
+      <td>#1e1e1e</td>
+      <td>Main app background</td>
     </tr>
     <tr>
       <td>Card Background</td>
       <td>BG_CARD</td>
+      <td>#2d2d2d</td>
       <td>Dialogs, frames</td>
     </tr>
     <tr>
-      <td>Panel Background</td>
-      <td>BG_PANEL</td>
-      <td>Headers, footer</td>
+      <td>Hover State</td>
+      <td>BG_HOVER</td>
+      <td>#3d3d3d</td>
+      <td>Hover effects</td>
+    </tr>
+    <tr>
+      <td>Active State</td>
+      <td>BG_ACTIVE</td>
+      <td>#4a4a4a</td>
+      <td>Active elements</td>
     </tr>
     <tr>
       <td>Primary Accent</td>
       <td>ACCENT</td>
-      <td>Main buttons</td>
+      <td>#6b8cff</td>
+      <td>Main buttons, headers</td>
     </tr>
     <tr>
-      <td>Secondary Accent</td>
-      <td>ACCENT2</td>
-      <td>Gold highlights</td>
+      <td>Accent Hover</td>
+      <td>ACCENT_H</td>
+      <td>#5a7ae0</td>
+      <td>Accent on hover</td>
     </tr>
     <tr>
-      <td>Available Status</td>
-      <td>GREEN</td>
-      <td>Available tables</td>
+      <td>Success</td>
+      <td>SUCCESS</td>
+      <td>#6fcf97</td>
+      <td>Success messages, available</td>
     </tr>
     <tr>
-      <td>Available Hover</td>
-      <td>GREEN_DARK</td>
-      <td>Hover on green</td>
+      <td>Error</td>
+      <td>ERROR</td>
+      <td>#eb5757</td>>
+      <td>Error messages, danger</td>
     </tr>
     <tr>
-      <td>In-Use Status</td>
-      <td>TABLE_BUSY</td>
-      <td>Busy tables</td>
-    </tr>
-    <tr>
-      <td>Hover Effect</td>
-      <td>TABLE_HOVER</td>
-      <td>Hover on tables</td>
-    </tr>
-    <tr>
-      <td>Neutral/Disabled</td>
-      <td>GREY_MID</td>
-      <td>Disabled elements</td>
+      <td>Warning</td>
+      <td>WARNING</td>
+      <td>#f2c94c</td>
+      <td>Warning messages</td>
     </tr>
     <tr>
       <td>Primary Text</td>
-      <td>TEXT_LIGHT</td>
+      <td>TEXT</td>
+      <td>#f0f0f0</td>
       <td>Main text</td>
     </tr>
     <tr>
-      <td>Secondary Text</td>
+      <td>Dim Text</td>
       <td>TEXT_DIM</td>
-      <td>Dim text</td>
+      <td>#a0a0a0</td>
+      <td>Secondary text</td>
     </tr>
-  </tbody>
-</table>
+    <tr>
+      <td>Border</td>
+      <td>BORDER</td>
+      <td>#404040</td>
+      <td>Borders, dividers</td>
+    </tr>
+  </table>
 
 2. fonts
-<table border="1" cellpadding="8" cellspacing="0">
-  <thead>
+<table>
     <tr>
       <th>Element</th>
       <th>Font</th>
       <th>Size</th>
       <th>Weight</th>
     </tr>
-  </thead>
-  <tbody>
     <tr>
       <td>Page Title</td>
       <td>Segoe UI</td>
-      <td>22</td>
+      <td>19px</td>
       <td>Bold</td>
     </tr>
     <tr>
-      <td>Dialog/Window Title</td>
+      <td>Heading</td>
       <td>Segoe UI</td>
-      <td>14</td>
+      <td>14px</td>
       <td>Bold</td>
     </tr>
     <tr>
       <td>Body Text</td>
       <td>Segoe UI</td>
-      <td>11</td>
+      <td>11px</td>
       <td>Normal</td>
     </tr>
     <tr>
       <td>Button Text</td>
       <td>Segoe UI</td>
-      <td>11</td>
+      <td>11px</td>
       <td>Bold</td>
     </tr>
     <tr>
-      <td>Small</td>
+      <td>Small Text</td>
       <td>Segoe UI</td>
-      <td>9</td>
+      <td>9px</td>
       <td>Normal</td>
     </tr>
     <tr>
       <td>Technical</td>
       <td>Courier New</td>
-      <td>11</td>
+      <td>11px</td>
       <td>Bold</td>
     </tr>
-  </tbody>
-</table>
+  </table>
 
 ## Configuration Documentation
 
@@ -229,8 +269,6 @@ TABLE_IDS = ["0001", "0002", "0003", "0004"]
 - type: String
 - Default Value:	"mahjong_data.json"
 - Format: JSON
-- Location in project: mahjong_system.py
-- Who uses it: class repository
 
 **configuration 2**
 - Variable Name:	RATE_PER_HOUR
@@ -239,7 +277,6 @@ TABLE_IDS = ["0001", "0002", "0003", "0004"]
 - Currency: Yuan (¥)
 - Unit:	Per hour
 - Purpose:	Base pricing for table sessions
-- Who uses it:	Repository.open_table(), OpenTableDialog
 
 **configuration 3**
 - Variable Name:	TABLE_IDS
@@ -248,7 +285,6 @@ TABLE_IDS = ["0001", "0002", "0003", "0004"]
 - Format:	4-digit strings
 - Count:	4 tables
 - Purpose:	All available table identifiers
-- Who uses it:Dashboard (creates TableCard for each)
 
 ## User guide
 **register**
@@ -276,25 +312,28 @@ TABLE_IDS = ["0001", "0002", "0003", "0004"]
 6. error:
 - Red error message shows
 - Check username and password
+
 **Top-up**
 1. User clicks "Top-Up" button in header
-2. TopUpDialog window opens
-3. Shows current balance
-4. User can choose:
+- TopUpDialog window opens
+- Shows current balance
+2. User can choose:
 - Click quick amount button (¥30, ¥50, ¥100, ¥200)
 - Type custom amount
-5. System requirement:
+3. System requirement:
 - Amount is a number
 - Amount is greater than 0
-6. System adds to balance
-7. System saves to file
-8. Success message shown
+4. System adds to balance
+5. System saves to file
+6. Success message shown
 **book table**
-1.user will see 4 table
-2.user can open table with green status
-3.OpenTableDialog window opens
-4.Shows table ID and current balance
-5.User selects duration:
+1. user will see 4 table
+2. user can open table with green status
+3. OpenTableDialog window opens
+4. Shows table ID and current balance
+5. User selects duration:
+- 1 hour =  ¥10
+- 2 hours = ¥20
 - 3 hours = ¥30
 - 6 hours = ¥60
 6. Cost displays and updates
@@ -312,11 +351,12 @@ TABLE_IDS = ["0001", "0002", "0003", "0004"]
 **show the table details**
 1. User looks at a table card
 2. If table is "In Use":
-3. Card shows:
-- Username of who booked it
+3. table shows:
+- Username and the table ID of who booked it
 - Duration booked
 - Total cost
 - Estimated end time
+  
 **close the table**
 You're on Dashboard
 1. Look at your table marked with red border if owned by you)
@@ -324,7 +364,7 @@ You're on Dashboard
 3. Click "Close Table" button
 4. Confirmation dialog appears:
 - Title: "Confirm Close"
-- Message: "Are you sure you want to close Table 000X?"
+- Message: "Close Table 000X?"
 - Buttons: Yes/No
 5. Click "Yes" to close
 If successful:
@@ -335,23 +375,89 @@ If successful:
 - Button: "Open Table" (green)
 If you click "No":
 - Nothing changes
-## Installation
-**Language**
--  Python 3.8+
+- Dialog closes
 
-**GUI Framework**
-- Tkinter
+# Admin Guide
+**login the admin**
+1. Username: admin
+2. Password: admin123
+3. Dashboard switches to Admin Dashboard
+4. 4 Tabs available at the top
 
-**Library**
-- 'tkinter' (UI)
-- 'ttk' (styled widgets)
-- 'hashlib' (password hashing)
-- 'dataclasses' (domain models)
-- 'json' and 'os' (data persistence)
-- 'datetime' (session timing) 
+**Tab1: User management**
+1. View Users:
+- showing all the registered users
+- double-click to edit
+2. Add New User:
+- enter new username
+- enter new password
+- set the balance
+- click "CREATE USER"
+3.Edit user:
+- change balance (number)
+- change password
+- click "SAVE CHANGE"
+4.Delete User:
+- cLick "DELETE SELECTED"button
+- confirm
+- user removed
+- cannot remove admin user
 
-**No external dependencies (uses only standard library)**
-- Clone the repository:
-   ```bash
-   git clone https://github.com/yourusername/mahjong-table-management.git cd mahjong-table-management
-python mahjong_system.py
+**Tab2: Table management**
+1. View Tables:
+- showing all 4 tables(Table ID, status and username,hours,cost,start time)
+2. Force Close Table:
+- click "Force Close"
+- confirm
+- table session ends
+- table becomes available
+3. Reset Table:
+- click "RESET ATBLE" on any table
+- clears any pending bookings
+- reset table to clean state
+
+**Tad3: Booking Management**
+1. View All Bookings:
+- Table of all active bookings
+- table,user,hours,cost,start time,end time,actions
+2. Close Specific Booking:
+- click on booking row
+- confirm
+- click "Yes"
+- booking removed from system
+3. Clear All Bookings:
+- click "CLEAR ALL BOOKINGS"
+- WARNING appears
+- confirm
+- all bookings deleted
+- all table become avaialable
+4. View Booking Statistic:
+- click "VIEW STATISTIC"
+- show total user,bookings and revenue
+
+**Tab4: System Settings
+1. Rate Configuration:
+- edit "Hourly Rate ($)"field
+- enter new rate
+- click "UPDATE RATE"
+2. Backup Data:
+- click "BACKUP DATA"
+- creates file
+- saved in same directory
+- success message displays
+3. Restore Data:
+- click "RESTORE DATA"
+- file browser opens
+- select backup JSON file
+- click "Open"
+- Data restored from backup
+- system refreshes
+4.Reset All Data
+- click "RESET ALL DATA"
+- first and final warning
+- data cleared
+- test data recreated
+- system reset
+
+
+
