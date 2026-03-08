@@ -108,6 +108,7 @@ Repository (The Storage Manager):
 - Clone the repository:
    ```bash
    git clone https://github.com/yourusername/mahjong-table-management.git cd mahjong-table-management
+   ```
 
 ## Architecture mapping
 1. Data Layer
@@ -232,6 +233,7 @@ main codes/main pro/
       <td>Borders, dividers</td>
     </tr>
   </table>
+  ```
 
 2. fonts
 <table>
@@ -278,6 +280,7 @@ main codes/main pro/
       <td>Bold</td>
     </tr>
   </table>
+  ```
 
 ## Configuration Documentation
 
